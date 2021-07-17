@@ -1,0 +1,381 @@
+openapi: 3.0.0
+
+info:
+  title: Persons API
+  description: Node.js Persons REST API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+paths:
+  /persons:
+    post:
+      description: Creates a new person
+      operationId: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: Person's first name
+                  type: string
+                  example: John
+                last_name:
+                  description: Person's last name
+                  type: string
+                  example: Doe
+                email:
+                  description: User email
+                  type: string
+                  example: johndoe@email.com
+              required:
+                - first_name
+                - last_name
+                - email
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/20xResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400Response"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/409Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500Response"
+        default:
+          description: Some other error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    get:
+      description: Search persons
+      operationId: find
+      parameters:
+        - name: first_name
+          description: Person's first name
+          in: query
+          schema:
+            type: string
+            example: John
+        - name: last_name
+          description: Person's last name
+          in: query
+          schema:
+            type: string
+            example: Doe
+        - name: email
+          description: Person's email
+          in: query
+          schema:
+            type: string
+            example: johndoe@email.com
+        - name: page
+          description: Pagination page (0 index based)
+          in: query
+          schema:
+            type: number
+            example: 0
+        - name: limit
+          description: Pagination limit
+          in: query
+          schema:
+            type: number
+            example: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    description: Current page (0 index based)
+                    type: number
+                    example: 0
+                  pages:
+                    description: Number of pages
+                    type: number
+                    example: 1
+                  limit:
+                    description: Results per page
+                    type: number
+                    example: 10
+                  total:
+                    description: Results total
+                    type: number
+                    example: 2
+                  items:
+                    description: Persons list
+                    type: string
+                    example: "[{id: 60cca2f23c16d1184c6602e7, first_name: 'John', last_name: 'Doe', email: 'johndoe@email.com'}, {id: 60cca2f23c16d1184c6602e7, first_name: 'Anna', last_name: 'Doe', email: 'annadoe@email.com'}]"
+                required:
+                  - page
+                  - pages
+                  - limit
+                  - total
+                  - items
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400Response"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500Response"
+        default:
+          description: Some other error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /persons/{id}:
+    get:
+      description: Shows person information
+      operationId: findOne
+      parameters:
+        - name: id
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 60cca2f23c16d1184c6602e7
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/20xResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400Response"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500Response"
+        default:
+          description: Some other error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      description: Updates person information
+      operationId: update
+      parameters:
+        - name: id
+          description: Person's ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 60cca2f23c16d1184c6602e7
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: Person's first name
+                  type: string
+                  example: John
+                last_name:
+                  description: Person's last name
+                  type: string
+                  example: Doe
+                email:
+                  description: User email
+                  type: string
+                  example: johndoe@email.com
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/20xResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400Response"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404Response"
+        "409":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/409Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500Response"
+        default:
+          description: Some other error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      description: Deletes a person
+      operationId: delete
+      parameters:
+        - name: id
+          description: Person's ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 60cca2f23c16d1184c6602e7
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400Response"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500Response"
+        default:
+          description: Some other error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    20xResponse:
+      type: object
+      properties:
+        _id:
+          description: Person's ID
+          type: string
+          example: 60cca2f23c16d1184c6602e7
+        first_name:
+          description: Person's first name
+          type: string
+          example: John
+        last_name:
+          description: Person's last name
+          type: string
+          example: Doe
+        email:
+          description: Person's email
+          type: string
+          example: johndoe@email.com
+      required:
+        - _id
+        - first_name
+        - last_name
+        - email
+
+    400Response:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: Bad Request
+      required:
+        - error
+
+    404Response:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: Not found
+      required:
+        - error
+
+    500Response:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: Internal Server Error
+      required:
+        - error
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: Error message
+      required:
+        - error
