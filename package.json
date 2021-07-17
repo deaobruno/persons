@@ -1,0 +1,31 @@
+{
+  "name": "people",
+  "version": "1.0.0",
+  "description": "Desafio Back-end LDS",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "eslint ./",
+    "lintFix": "eslint ./ --fix"
+  },
+  "keywords": [],
+  "author": "Bruno Oliveira",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-openapi": "^9.1.0",
+    "express-validator": "^6.12.0",
+    "js-yaml": "^4.1.0",
+    "mongoose": "^5.13.3",
+    "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "eslint": "^7.30.0",
+    "nodemon": "^2.0.12"
+  }
+}
