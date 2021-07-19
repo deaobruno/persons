@@ -5,12 +5,15 @@ import fs from 'fs';
 import {initialize} from 'express-openapi';
 import jsYaml from 'js-yaml';
 import swaggerUI from 'swagger-ui-express';
+import {app as router} from './src/routes/index.js';
 
 const app = express();
 const port = process.env.APP_PORT;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(router);
 
 fs.readFile('./docs/openapi/openapi.yaml', 'utf8', async (err, yamlFile) => {
   if (err) {
